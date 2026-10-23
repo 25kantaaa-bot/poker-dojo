@@ -104,15 +104,6 @@ h2.sec{font:700 13px var(--f-body);color:var(--muted);letter-spacing:.06em;margi
 .formula{font-family:var(--f-mono);font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0;overflow-x:auto}
 .next{margin-top:14px;width:100%}
 /* preflop */
-.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;list-style:none;padding:0;margin:0 0 12px}
-.ps{border:1px solid var(--line);border-radius:6px;text-align:center;padding:4px 0;line-height:1.25}
-.ps b{display:block;font:600 11px var(--f-mono)}
-.ps span{font-size:10px;color:var(--muted)}
-.ps.fold{opacity:.45}
-.ps.me{border-color:var(--brass);background:rgba(201,162,74,.12)}
-.ps.me b{color:var(--brass)}
-.ps.op{border-color:var(--bad)}
-.ps.op span{color:var(--text);font-family:var(--f-mono)}
 .handline{display:flex;align-items:center;gap:14px;margin:6px 0 2px}
 .hk{font:700 26px var(--f-display);letter-spacing:.01em}
 .grid{display:grid;grid-template-columns:repeat(13,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:10px}
@@ -126,48 +117,110 @@ h2.sec{font:700 13px var(--f-body);color:var(--muted);letter-spacing:.06em;margi
 .grid .g-me{outline:2px solid #fff;outline-offset:-2px;font-weight:700;position:relative;z-index:1}
 .legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;font-size:12px;color:var(--muted)}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-1px;margin-right:4px}
-/* play */
-.felt{position:relative;height:340px;margin:4px 0 12px;border-radius:150px/130px;background:radial-gradient(ellipse at 50% 45%,#1C3B2F 0%,#152C22 58%,#10211A 100%);border:1px solid var(--line);box-shadow:inset 0 0 0 7px #0E1D17,inset 0 0 0 8px rgba(201,162,74,.35)}
-.seat{position:absolute;transform:translate(-50%,-50%);width:86px;padding:4px 4px 3px;border:1px solid var(--line);border-radius:8px;background:rgba(15,26,23,.94);text-align:center;font-size:11px;line-height:1.3}
-.seat.turn{border-color:var(--brass);box-shadow:0 0 0 1px var(--brass)}
-.seat.folded{opacity:.45}
-.seat.win{border-color:var(--good);box-shadow:0 0 0 1px var(--good)}
-.seat .mini{display:flex;justify-content:center;gap:2px;min-height:20px;margin-bottom:2px}
-.seat .r1{display:flex;gap:4px;justify-content:center;align-items:center}
-.seat .pos{font:600 10px var(--f-mono);color:var(--brass)}
-.seat .dbtn{display:inline-grid;place-items:center;width:14px;height:14px;border-radius:50%;background:var(--card);color:var(--ink);font:700 9px var(--f-mono)}
-.seat .nm{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:42px;font-size:10px}
-.seat .sk{font:600 12px var(--f-mono);font-variant-numeric:tabular-nums}
-.seat .la{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:13px}
-.seat .la.w{color:var(--good);font-weight:700}
-.seat .chip{position:absolute;font:600 11px var(--f-mono);padding:1px 6px;border-radius:999px;background:#2A2412;border:1px solid rgba(201,162,74,.6);color:var(--brass);white-space:nowrap}
-.s0{left:50%;top:92%}.s1{left:14%;top:74%}.s2{left:14%;top:33%}.s3{left:50%;top:12%}.s4{left:86%;top:33%}.s5{left:86%;top:74%}
-.s1 .chip,.s2 .chip{left:calc(100% + 4px);top:50%;transform:translateY(-50%)}
-.s4 .chip,.s5 .chip{right:calc(100% + 4px);top:50%;transform:translateY(-50%)}
-.s3 .chip{top:calc(100% + 4px);left:50%;transform:translateX(-50%)}
-.s0 .chip{bottom:calc(100% + 4px);left:50%;transform:translateX(-50%)}
-.s0 .sdcards{position:absolute;left:calc(100% + 4px);top:50%;transform:translateY(-50%);display:flex;gap:2px}
-.potlbl{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font:600 13px var(--f-mono);color:var(--text);white-space:nowrap;text-align:center}
-.potlbl small{display:block;font:400 10px var(--f-body);color:var(--muted)}
-.board{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);display:flex;gap:4px}
-.heroarea{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-.heroarea .cards{gap:6px}
-.heroinfo{line-height:1.4}
-.heroinfo .hn{font-weight:700}
-.heroinfo .hs{font:600 14px var(--f-mono);color:var(--brass)}
-.ctl{border-top:1px solid var(--line);padding-top:12px}
-.sizes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.chipbtn{min-height:40px;flex:1 1 0;min-width:52px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font:600 13px var(--f-mono);cursor:pointer}
+/* round table (shared by preflop drill + play) */
+.rt{position:relative;width:100%;-webkit-user-select:none;user-select:none;--g-early:#93AFC0;--g-mid:#8EC0AE;--g-late:#D6B66E;--g-blind:#D39482}
+.rt-pre{height:clamp(216px,66vw,256px);margin:4px -4px 2px;width:auto}
+.rt-play{position:absolute;left:0;right:0;top:0;bottom:0;margin:auto;height:min(100%,calc(min(100vw,520px) * 1.3))}
+.rt-felt{position:absolute;left:0;top:0;border-radius:50%;background:radial-gradient(ellipse at 50% 42%,#1D3D30 0%,#152C22 60%,#10211A 100%);box-shadow:0 0 0 6px #0D1B15,0 0 0 7px rgba(201,162,74,.38),inset 0 0 0 1px rgba(232,228,216,.05)}
+.rt-ring{position:absolute;left:0;top:0;border:1px dashed rgba(201,162,74,.28);border-radius:50%;display:none;pointer-events:none}
+.rt.ord .rt-ring{display:block}
+.rt-ring i{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;left:calc(50% + var(--c) * 50%);top:calc(50% + var(--s) * 50%);transform:rotate(var(--r))}
+.rt-ring i::before{content:"";position:absolute;left:1px;top:2.5px;width:5px;height:5px;border-top:1.5px solid rgba(201,162,74,.8);border-right:1.5px solid rgba(201,162,74,.8);transform:rotate(45deg)}
+.rt-dealer{position:absolute;left:0;top:0;z-index:1;display:flex;flex-direction:column;align-items:center;padding:2px 7px;background:#0D1B15;border:1px solid rgba(201,162,74,.55);border-radius:7px;font:500 9px/1.15 var(--f-body);color:var(--brass);letter-spacing:.05em;white-space:nowrap}
+.rt-dealer svg{display:block;width:16px;height:11px}
+.rt-dealer .c1{fill:#BDB6A4}.rt-dealer .c2{fill:var(--card)}
+.rt-center{position:absolute;left:0;top:0;z-index:1;display:flex;flex-direction:column;align-items:center}
+.rt-pot{font:600 12px var(--f-mono);white-space:nowrap;margin-bottom:5px}
+.rt-pot span{font:400 10px var(--f-body);color:var(--muted);margin-right:4px}
+.rt-pot small{font:400 10px var(--f-mono);color:var(--muted);margin-left:6px}
+.rt-board{display:flex;gap:4px}
+.rt.short .rt-board,.rt.nb .rt-board{gap:3px}
+.rt.short .rt-board .cd,.rt.nb .rt-board .cd{width:27px;height:38px}
+.rt.short .rt-board .cd .rk,.rt.nb .rt-board .cd .rk{font-size:13px}.rt.short .rt-board .cd .st,.rt.nb .rt-board .cd .st{font-size:12px;margin-top:1px}
+.rt-seat{position:absolute;left:0;top:0;z-index:2;background:rgba(14,25,21,.95);border:1px solid var(--line);border-radius:8px;text-align:center;line-height:1.2}
+.rt-ord{display:none;position:absolute;top:-7px;left:-7px;width:17px;height:17px;border-radius:50%;background:var(--bg);border:1px solid rgba(201,162,74,.8);color:var(--brass);font:600 9.5px/15px var(--f-mono);text-align:center}
+.rt.ord .rt-ord{display:block}
+.rt-pos{font-family:var(--f-mono);font-weight:700}
+.rt-grp{display:inline-block;font:500 9px/1.35 var(--f-body);padding:0 4px;border-radius:3px;border:1px solid;white-space:nowrap}
+.g-early{color:var(--g-early);border-color:rgba(147,175,192,.38)}
+.g-mid{color:var(--g-mid);border-color:rgba(142,192,174,.38)}
+.g-late{color:var(--g-late);border-color:rgba(214,182,110,.4)}
+.g-blind{color:var(--g-blind);border-color:rgba(211,148,130,.4)}
+.rt-mini{min-width:56px;padding:2px 6px 3px}
+.rt-mini .rt-pos{display:block;font-size:14px;line-height:1.25}
+.rt-note{display:block;font:600 10px/1.2 var(--f-mono);color:var(--muted);margin-top:1px}
+.rt-seat.fold{opacity:.4}
+.rt-seat.me{border-color:var(--brass);background:#262A1C;box-shadow:0 0 0 1px var(--brass)}
+.rt-seat.me .rt-pos,.rt-seat.me .rt-note{color:var(--brass)}
+.rt-seat.op{border-color:rgba(217,96,74,.75)}
+.rt-seat.op .rt-note{color:#F0B4A6}
+.rt-cpu{width:80px;padding:2px 4px 3px}
+.rt-h{display:flex;align-items:center;justify-content:center;gap:4px;line-height:1.3}
+.rt-cpu .rt-pos,.rt-hero .rt-pos{font-size:12px}
+.rt-m{display:flex;align-items:center;justify-content:center;gap:5px;height:24px}
+.rt .sk{font:600 13px var(--f-mono);font-variant-numeric:tabular-nums}
+.rt-sc{display:flex;gap:2px}
+.rt-sc .cd.mini{width:13px;height:19px}
+.rt-sc .cd.xs{width:17px;height:23px}.rt-sc .cd.xs .rk{font-size:9.5px}.rt-sc .cd.xs .st{font-size:8.5px}
+.rt .la{font-size:10px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rt .la .nm{color:#B9C4BC;margin-right:3px}
+.rt .la.w{color:var(--good);font-weight:700}
+.rt-seat.turn{border-color:var(--brass);box-shadow:0 0 0 2px rgba(201,162,74,.5);animation:rtPulse 1.4s ease-in-out infinite}
+@keyframes rtPulse{50%{box-shadow:0 0 0 4px rgba(201,162,74,.16)}}
+.rt-seat.win{border-color:var(--good);box-shadow:0 0 0 1px var(--good)}
+.rt-hero{width:132px;padding:4px 6px 3px}
+.rt-hc{display:flex;gap:4px;justify-content:center}
+.rt-hero .rt-hc .cd{width:46px;height:64px;border-radius:6px}
+.rt-hero .rt-hc .cd .rk{font-size:22px}.rt-hero .rt-hc .cd .st{font-size:19px;margin-top:3px}
+.rt.short .rt-hero .rt-hc .cd{width:38px;height:53px;border-radius:5px}
+.rt.short .rt-hero .rt-hc .cd .rk{font-size:18px}.rt.short .rt-hero .rt-hc .cd .st{font-size:15px;margin-top:2px}
+.rt-hl{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:3px}
+.rt-hero .sk{color:var(--brass)}
+.rt-mk{position:absolute;left:0;top:0;z-index:3;pointer-events:none}
+.rt-chip{display:flex;align-items:center;gap:3px;font:600 11px/1 var(--f-mono);padding:2px 6px 2px 3px;border-radius:999px;background:#2A2412;border:1px solid rgba(201,162,74,.6);color:var(--brass);white-space:nowrap}
+.rt-chip::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--brass);box-shadow:inset 0 0 0 2px #2A2412,inset 0 0 0 3px var(--brass)}
+.rt-chip.op{border-color:rgba(217,96,74,.8);color:#F0B4A6;background:#2B1A15}
+.rt-chip.op::before{background:#D9604A;box-shadow:inset 0 0 0 2px #2B1A15,inset 0 0 0 3px #D9604A}
+.rt-d{width:19px;height:19px;border-radius:50%;background:var(--card);color:var(--ink);font:700 10px/19px var(--f-mono);text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1.5px #CFC6B0}
+.rt-corner{position:absolute;top:0;z-index:4;min-height:34px;padding:0 11px;border:1px solid var(--line);border-radius:999px;background:rgba(14,25,21,.92);color:var(--muted);font:500 12px var(--f-body);cursor:pointer}
+.rt-corner::after{content:"";position:absolute;inset:-6px}
+.rt-corner.l{left:0}.rt-corner.r{right:0}
+.rt-corner[aria-pressed="true"]{color:var(--brass);border-color:rgba(201,162,74,.6)}
+.rt-ban{max-width:min(230px,64vw);padding:5px 12px 6px;margin-bottom:6px;border-radius:10px;background:rgba(13,27,21,.96);border:1px solid var(--brass);text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.rt-ban b{display:block;font:700 13px/1.35 var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rt-ban span b{display:inline;font:inherit;font-weight:700}
+.rt-ban span{display:block;font:500 11px/1.35 var(--f-body);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rt-cap{margin:2px 0 0;font-size:12.5px;color:var(--muted);line-height:1.5}
+.rt-cap b{color:var(--brass);font-weight:700}
+/* play: fixed-height app shell (no document scroll) */
+html.playmode{height:100%;height:100dvh;overflow:hidden}
+html.playmode body{height:100%;overflow:hidden}
+.playmode .app{height:100%;min-height:0;max-width:520px;display:flex;flex-direction:column;padding-bottom:6px}
+.playmode .top{height:44px;padding:0;flex:none}
+.playmode .logo{font-size:18px}
+.playmode .sub,.playmode .score .lbl{display:none}
+.playmode .score{display:flex;align-items:baseline;gap:8px}
+.playmode .score b{font-size:15px}
+.playmode .ghost{min-height:36px}
+.playmode .tabwrap{position:static;flex:none;padding:0 0 6px;margin:0}
+.playmode main{flex:1;min-height:0;display:flex;flex-direction:column}
+.playmode #panel-play{flex:1;min-height:0;display:flex;flex-direction:column}
+#playStage{position:relative;flex:1;min-height:0;margin-bottom:6px}
+#playCtl{flex:none;min-height:148px;display:flex;flex-direction:column;justify-content:flex-end;border-top:1px solid var(--line);padding-top:8px}
+.sizes{display:flex;gap:6px;margin-bottom:6px}
+.chipbtn{min-height:38px;flex:1 1 0;min-width:0;padding:0 2px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font:600 13px var(--f-mono);cursor:pointer}
 .chipbtn.on{border-color:var(--brass);color:var(--brass)}
-.slider{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.slider{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .slider label{font-size:12px;color:var(--muted)}
-.slider input{flex:1;accent-color:var(--brass);min-height:32px}
+.slider input{flex:1;accent-color:var(--brass);min-height:28px;margin:0}
 .slider output{font:600 14px var(--f-mono);min-width:64px;text-align:right}
 .acts3{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px}
-.acts3 .btn{min-height:54px;padding:0 6px;font-size:15px}
-.hint{font-size:12px;color:var(--muted);margin:8px 0 0}
-.hint b{color:var(--text);font-family:var(--f-mono)}
-.wait{color:var(--muted);text-align:center;min-height:54px;display:flex;align-items:center;justify-content:center;margin:0}
+.acts3 .btn{min-height:50px;padding:0 6px;font-size:15px}
+.hint{font:500 11px/1.4 var(--f-mono);color:var(--muted);margin:5px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hint b{color:var(--text);font-weight:600}
+.wait{color:var(--muted);text-align:center;min-height:50px;display:flex;align-items:center;justify-content:center;margin:0}
+@media (max-height:600px){#playCtl{min-height:136px}.chipbtn{min-height:34px}.slider input{min-height:24px}.acts3 .btn{min-height:46px}}
+.flagn{color:var(--bad);font-family:var(--f-mono);font-size:12px;margin-left:4px}
 .handres{font-size:14px;margin-bottom:10px}
 .handres .net{font:700 18px var(--f-mono)}
 .pos-c{color:var(--good)}.neg-c{color:var(--bad)}
@@ -176,11 +229,12 @@ table.rv th,table.rv td{text-align:left;padding:6px 4px;border-bottom:1px solid 
 table.rv th{color:var(--muted);font-weight:500}
 table.rv td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 .flag-ok{color:var(--good)}.flag-ng{color:var(--bad);font-weight:700}
-details.log{margin-top:14px;border:1px solid var(--line);border-radius:10px;padding:0 12px}
-details.log summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:500;font-size:14px}
-details.log ol{margin:0 0 12px;padding-left:20px;font-size:12px;line-height:1.7;color:var(--muted)}
-details.log li.h{color:var(--text)}
-details.log li.st{color:var(--brass);list-style:none;margin-left:-20px}
+.seg{display:flex;gap:2px;padding:3px;background:var(--bg);border:1px solid var(--line);border-radius:9px}
+.seg button{min-height:38px;padding:0 12px;border:0;border-radius:6px;background:transparent;color:var(--muted);font-weight:500;font-size:13px;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--brass);color:var(--ink);font-weight:700}
+ol.logl{margin:4px 0 0;padding-left:20px;font-size:12px;line-height:1.7;color:var(--muted)}
+ol.logl li.h{color:var(--text)}
+ol.logl li.st{color:var(--brass);list-style:none;margin-left:-20px;margin-top:4px}
 /* sheet */
 .sheet{position:fixed;inset:0;z-index:50}
 .sheet[hidden]{display:none}
@@ -231,11 +285,8 @@ table.st td{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
     <section id="panel-pre" role="tabpanel" aria-labelledby="tab-pre"></section>
     <section id="panel-odds" role="tabpanel" aria-labelledby="tab-odds" hidden></section>
     <section id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
-      <div id="playTable"></div>
-      <div id="playHero"></div>
-      <div id="playCtl" class="ctl"></div>
-      <div id="playReview"></div>
-      <details class="log" id="playLogBox"><summary>ハンドログ</summary><ol id="playLog"></ol></details>
+      <div id="playStage"></div>
+      <div id="playCtl"></div>
     </section>
     <section id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden></section>
   </main>
@@ -250,6 +301,22 @@ table.st td{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
     </div>
     <div id="statsBody"></div>
     <div id="resetArea"></div>
+  </div>
+</div>
+
+<div id="psheet" class="sheet" hidden>
+  <div class="sheet-bd" data-pclose="1"></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="psTitle">
+    <h2 id="psTitle" class="sr">振り返りとハンドログ</h2>
+    <div class="sheet-head">
+      <div class="seg" role="tablist" aria-label="表示切替">
+        <button type="button" role="tab" id="psRev" aria-controls="psRevBody" aria-selected="true">振り返り</button>
+        <button type="button" role="tab" id="psLog" aria-controls="psLogBody" aria-selected="false">ハンドログ</button>
+      </div>
+      <button id="psClose" class="ghost" type="button">閉じる</button>
+    </div>
+    <div id="psRevBody" role="tabpanel" aria-labelledby="psRev"><div id="playReview"></div></div>
+    <div id="psLogBody" role="tabpanel" aria-labelledby="psLog" hidden><ol id="playLog" class="logl"></ol></div>
   </div>
 </div>
 
@@ -447,8 +514,12 @@ var MODES=['pre','odds','play','quiz'];var curMode='pre';
 function setMode(m,focusTab){
   curMode=m;
   MODES.forEach(function(k){var t=$('#tab-'+k),p=$('#panel-'+k),on=k===m;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1;p.hidden=!on;});
-  if(focusTab)$('#tab-'+m).focus();
+  var wasPlay=document.documentElement.classList.contains('playmode');
+  document.documentElement.classList.toggle('playmode',m==='play');
+  if(m==='play'&&!wasPlay){try{window.scrollTo(0,0);}catch(e){}}
+  if(focusTab)$('#tab-'+m).focus({preventScroll:m==='play'});
   if(m==='play'&&!G.init)playInit();
+  relayoutAll();
   if(m==='odds'&&!O.q)newOdds();
   if(m==='quiz'&&!Q.q)newQuiz();
 }
@@ -458,6 +529,100 @@ document.querySelector('.tabs').addEventListener('keydown',function(e){
   if(e.key==='ArrowRight'){setMode(MODES[(i+1)%4],true);e.preventDefault();}
   else if(e.key==='ArrowLeft'){setMode(MODES[(i+3)%4],true);e.preventDefault();}
 });
+
+/* =========================================================
+   SHARED: ROUND TABLE DIAGRAM
+   seat k = k steps clockwise from hero (k=0, bottom-center).
+   Screen angles are y-down, so increasing angle = clockwise:
+   hero(bottom) -> lower-left -> left -> upper-left -> [dealer, top] -> upper-right -> right.
+   ========================================================= */
+var POS6=['BTN','SB','BB','UTG','HJ','CO']; /* clockwise seating order */
+var SEAT_ANG=[90,150,190,235,305,20];
+var POS_GROUP={UTG:['アーリー','early'],HJ:['ミドル','mid'],CO:['レイト','late'],BTN:['レイト','late'],SB:['ブラインド','blind'],BB:['ブラインド','blind']};
+var ACT_ORDER={UTG:1,HJ:2,CO:3,BTN:4,SB:5,BB:6};
+var POS_WHERE={UTG:'ボタンの3つ右＝BBの左隣。最初に行動',HJ:'ボタンの2つ右',CO:'ボタンの右隣',BTN:'ボタン本人。フロップ以降は常に最後に行動',SB:'ボタンの左隣。フロップ以降は最初に行動',BB:'ボタンの2つ左。プリフロップは最後に行動'};
+var TBL={order:{pre:true,play:false}};
+var CHEV=[285,342,55,120,170,212].map(function(a){var r=a*Math.PI/180;return '<i style="--c:'+Math.cos(r).toFixed(3)+';--s:'+Math.sin(r).toFixed(3)+';--r:'+(a+90)+'deg"></i>';}).join('');
+var DEALER_ICON='<svg viewBox="0 0 16 11" aria-hidden="true"><rect class="c1" x="2" y="1" width="6.5" height="9" rx="1.2" transform="rotate(-14 5.2 5.5)"/><rect class="c2" x="7.5" y="1" width="6.5" height="9" rx="1.2" transform="rotate(10 10.7 5.5)"/></svg>';
+function rtHTML(o){
+  return '<div class="rt rt-'+o.mode+(o.order?' ord':'')+'" role="group" aria-label="'+o.label+'">'+
+    '<div class="rt-felt" aria-hidden="true"></div>'+
+    '<div class="rt-ring" aria-hidden="true">'+CHEV+'</div>'+
+    '<div class="rt-dealer">'+DEALER_ICON+'<span>ディーラー</span></div>'+
+    '<div class="rt-center">'+o.center+'</div>'+
+    o.seats.join('')+
+    o.marks.map(function(m){return '<span class="rt-mk '+m.cls+'" data-for="'+m.k+'" aria-hidden="true">'+m.html+'</span>';}).join('')+
+    (o.corner||'')+'</div>';
+}
+function grpTag(pos){var g=POS_GROUP[pos];return '<span class="rt-grp g-'+g[1]+'">'+g[0]+'</span>';}
+function ordBadge(pos){return '<span class="rt-ord" aria-hidden="true">'+ACT_ORDER[pos]+'</span>';}
+function ordBtn(id,mode){var on=TBL.order[mode];return '<button type="button" class="rt-corner l" id="'+id+'" aria-pressed="'+(on?'true':'false')+'" data-ordmode="'+mode+'" aria-label="行動順（矢印と番号）を表示">順番</button>';}
+function toggleOrder(btn){
+  var mode=btn.getAttribute('data-ordmode'),on=!TBL.order[mode];TBL.order[mode]=on;
+  btn.setAttribute('aria-pressed',on?'true':'false');var rt=btn.closest('.rt');if(rt)rt.classList.toggle('ord',on);
+}
+/* rect helpers */
+function ovl(a,b){var w=Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x),h=Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y);return w>0&&h>0?w*h:0;}
+function boxOf(el,root){return {x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight};}
+function markCands(S,mw,mh,cx,cy){
+  var sx=S.x+S.w/2,sy=S.y+S.h/2,dx=cx-sx,dy=cy-sy,L=Math.sqrt(dx*dx+dy*dy)||1;dx/=L;dy/=L;
+  var gx=dx>=0?1:-1,gy=dy>=0?1:-1,g=4,adx=Math.abs(dx),ady=Math.abs(dy);
+  var t=Math.min(adx>1e-3?S.w/2/adx:1e9,ady>1e-3?S.h/2/ady:1e9)+g+adx*mw/2+ady*mh/2;
+  return [
+    [sx+dx*t,sy+dy*t],                                  /* straight toward the centre */
+    [sx+gx*(S.w/2-mw/2),sy+gy*(S.h/2+g+mh/2)],          /* inner corner, vertical */
+    [sx+gx*(S.w/2+g+mw/2),sy],                          /* inner side */
+    [sx+gx*(S.w/2+g+mw/2),sy+gy*(S.h/2-mh/2)],
+    [sx+gx*(S.w/2+g+mw/2),sy-gy*(S.h/2-mh/2)],          /* inner side, away from centre line */
+    [sx-gx*(S.w/2-mw/2),sy+gy*(S.h/2+g+mh/2)],          /* other corner, vertical */
+    [sx+gx*(S.w/2-mw/2),sy-gy*(S.h/2+g+mh/2)],          /* outer corner */
+    [sx+dx*(t+16),sy+dy*(t+16)]
+  ];
+}
+function layoutRT(rt){
+  if(!rt)return;var W=rt.clientWidth,H=rt.clientHeight;if(!W||!H)return;
+  if(rt.classList.contains('rt-play'))rt.classList.toggle('short',H<340);
+  var seats=rt.querySelectorAll('.rt-seat'),S=[],mw=0,mh=0,i;
+  for(i=0;i<seats.length;i++){var el=seats[i],k=+el.getAttribute('data-k');S[k]={el:el,w:el.offsetWidth,h:el.offsetHeight};if(k){mw=Math.max(mw,S[k].w);mh=Math.max(mh,S[k].h);}}
+  var cx=W/2,cy=H/2,rx=Math.max(20,W/2-mw/2-3),ry=Math.max(20,H/2-mh/2-3),obs=[];
+  S.forEach(function(s,k){
+    var x,y;
+    if(k===0){x=cx;y=H-s.h/2-2;}
+    else{var a=SEAT_ANG[k]*Math.PI/180;x=cx+rx*Math.cos(a);y=cy+ry*Math.sin(a);}
+    s.r={x:Math.round(x-s.w/2),y:Math.round(y-s.h/2),w:s.w,h:s.h};
+    s.el.style.left=s.r.x+'px';s.el.style.top=s.r.y+'px';obs.push(s.r);
+  });
+  var felt=rt.querySelector('.rt-felt'),fx=rx+2,fy=ry+2;
+  felt.style.left=(cx-fx)+'px';felt.style.top=(cy-fy)+'px';felt.style.width=2*fx+'px';felt.style.height=2*fy+'px';
+  var ring=rt.querySelector('.rt-ring'),qx=rx*0.6,qy=ry*0.58;
+  ring.style.left=(cx-qx)+'px';ring.style.top=(cy-qy)+'px';ring.style.width=2*qx+'px';ring.style.height=2*qy+'px';
+  var dl=rt.querySelector('.rt-dealer'),dw=dl.offsetWidth,dh=dl.offsetHeight,dy=Math.max(0,Math.round(cy-fy-dh/2));
+  dl.style.left=Math.round(cx-dw/2)+'px';dl.style.top=dy+'px';obs.push({x:cx-dw/2,y:dy,w:dw,h:dh});
+  var ce=rt.querySelector('.rt-center');
+  var lim=Math.floor(2*(rx*0.98-mw/2)-10),ban=ce.querySelector('.rt-ban');if(ban)ban.style.maxWidth=Math.max(120,lim)+'px';
+  rt.classList.remove('nb');if(ce.offsetWidth>lim)rt.classList.add('nb'); /* board/banner must fit between the side seats */
+  var cw=ce.offsetWidth,ch=ce.offsetHeight,cty=Math.round(cy-ch/2),bestY=cty,bestO=Infinity;
+  /* nudge the centre block vertically until it clears every seat */
+  [0,-4,4,-8,8,-12,12,-16,16,-20,20,-26,26,-32,32].some(function(d){var r={x:cx-cw/2-3,y:cty+d-3,w:cw+6,h:ch+6},o=0;S.forEach(function(s){o+=ovl(r,s.r);});if(o<bestO){bestO=o;bestY=cty+d;}return o===0;});
+  cty=bestY;
+  ce.style.left=Math.round(cx-cw/2)+'px';ce.style.top=cty+'px';obs.push({x:cx-cw/2,y:cty,w:cw,h:ch});
+  rt.querySelectorAll('.rt-corner').forEach(function(b){obs.push(boxOf(b));});
+  var bounds={x:0,y:0,w:W,h:H};
+  rt.querySelectorAll('.rt-mk').forEach(function(m){
+    var s=S[+m.getAttribute('data-for')];if(!s)return;
+    var w=m.offsetWidth,h=m.offsetHeight,best=null,bs=Infinity;
+    markCands(s.r,w,h,cx,cy).some(function(c){
+      var r={x:Math.round(c[0]-w/2),y:Math.round(c[1]-h/2),w:w,h:h},pad={x:r.x-2,y:r.y-2,w:w+4,h:h+4},sc=w*h-ovl(r,bounds);
+      obs.forEach(function(o){sc+=ovl(pad,o);});
+      if(sc<bs){bs=sc;best=r;}return sc===0;
+    });
+    m.style.left=best.x+'px';m.style.top=best.y+'px';obs.push(best);
+  });
+}
+function relayoutAll(){document.querySelectorAll('.rt').forEach(layoutRT);}
+var rlRAF=0;
+window.addEventListener('resize',function(){cancelAnimationFrame(rlRAF);rlRAF=requestAnimationFrame(relayoutAll);});
+try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(relayoutAll);}catch(e){}
 
 /* =========================================================
    MODE 1: PREFLOP DRILL
@@ -491,22 +656,33 @@ function newDrill(){
   renderDrill();
 }
 function drillNames(){return D.kind==='rfi'?{R:'Raise',C:'Call',F:'Fold'}:{R:'3-Bet',C:'Call',F:'Fold'};}
+function drillTableHTML(){
+  var isR=D.kind==='rfi',openTxt=D.opener==='SB'?'3bb':'2.5bb',hi=POS_ORDER.indexOf(D.pos),base=POS6.indexOf(D.pos),seats=[],marks=[];
+  for(var k=0;k<6;k++){
+    var p=POS6[(base+k)%6],pi=POS_ORDER.indexOf(p),st='',note='—',g=POS_GROUP[p];
+    if(p===D.pos){st='me';note='あなた';}
+    else if(!isR&&p===D.opener){st='op';note='オープン';}
+    else if(pi<hi){st='fold';note='Fold';}
+    seats.push('<div class="rt-seat rt-mini'+(st?' '+st:'')+'" data-k="'+k+'" role="img" aria-label="'+p+'（'+g[0]+'）'+(note==='—'?' 未アクション':' '+note)+'">'+ordBadge(p)+'<b class="rt-pos">'+p+'</b>'+grpTag(p)+'<span class="rt-note">'+note+'</span></div>');
+    if(!isR&&p===D.opener)marks.push({k:k,cls:'rt-chip op',html:openTxt});
+    else if(p==='SB')marks.push({k:k,cls:'rt-chip',html:'0.5'});
+    else if(p==='BB')marks.push({k:k,cls:'rt-chip',html:'1'});
+    if(p==='BTN')marks.push({k:k,cls:'rt-d',html:'D'});
+  }
+  return rtHTML({mode:'pre',order:TBL.order.pre,label:'テーブル図。あなたは下中央の'+D.pos+'。上がディーラー、行動は時計回り',seats:seats,marks:marks,
+    center:'<div class="rt-pot"><span>ポット</span>'+(isR?'1.5':'4')+'bb</div>',corner:ordBtn('preOrd','pre')});
+}
 function renderDrill(){
   var isR=D.kind==='rfi',openTxt=D.opener==='SB'?'3bb':'2.5bb',hi=POS_ORDER.indexOf(D.pos),oi=D.opener?POS_ORDER.indexOf(D.opener):-1;
-  var strip=POS_ORDER.map(function(p,pi){var st,note;
-    if(p===D.pos){st='me';note='あなた';}
-    else if(!isR&&p===D.opener){st='op';note=openTxt;}
-    else if(pi<hi){st='fold';note='Fold';}
-    else{st='wait';note=p==='SB'?'0.5':p==='BB'?'1':'—';}
-    return '<li class="ps '+st+'"><b>'+p+'</b><span>'+note+'</span></li>';}).join('');
   var situ;
   if(isR){var before=POS_ORDER.slice(0,hi);situ=(before.length?before.join('・')+' がフォールド。':'あなたが最初のアクション。')+(D.pos==='SB'?'BBと1対1。':'')+' オープンする？';}
   else{var between=POS_ORDER.slice(oi+1,hi).filter(function(p){return p!=='SB'||D.pos==='BB';});
     situ=D.opener+' が '+openTxt+' にオープン。'+(between.length?between.join('・')+' はフォールド。':'')+' どうする？';}
   var acts=isR?[['F','Fold'],['R','Raise '+(D.pos==='SB'?'3bb':'2.5bb')]]:[['F','Fold'],['C','Call'],['R','3-Bet']];
   var h='<div class="q"><span class="qtag">'+(isR?'RFI（オープン判断）':'vs オープン')+'</span>'+
-    '<ul class="strip" aria-label="ポジション状況">'+strip+'</ul>'+
-    '<div class="handline"><div class="cards">'+cardsHTML(D.cards,'lg')+'</div><div><div class="hk">'+D.hk+'</div><div class="muted small">あなた: '+D.pos+' · 100bb</div></div></div>'+
+    drillTableHTML()+
+    '<p class="rt-cap"><b>あなた: '+D.pos+'</b>（'+POS_WHERE[D.pos]+'）</p>'+
+    '<div class="handline"><div class="cards">'+cardsHTML(D.cards,'lg')+'</div><div><div class="hk">'+D.hk+'</div><div class="muted small">'+POS_GROUP[D.pos][0]+'ポジション · 100bb</div></div></div>'+
     '<p class="qtext">'+situ+'</p>'+
     '<div class="row" style="margin-top:14px">'+acts.map(function(a){var cls='btn'+(a[0]==='R'?' primary':'');if(D.answered&&D.choice===a[0])cls+=' picked';return '<button type="button" id="pre-'+a[0]+'" class="'+cls+'" data-ans="'+a[0]+'"'+(D.answered?' disabled':'')+'>'+a[1]+'</button>';}).join('')+'</div>';
   if(D.answered){
@@ -520,6 +696,7 @@ function renderDrill(){
   }
   h+='</div>';
   $('#panel-pre').innerHTML=h;
+  layoutRT($('#panel-pre .rt'));
 }
 function gridHTML(map,me){
   var h='<div class="grid" role="img" aria-label="13×13 レンジ表。'+me+' を白枠で表示">';
@@ -534,6 +711,7 @@ function legendHTML(isR){
 }
 $('#panel-pre').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b)return;
+  if(b.id==='preOrd'){toggleOrder(b);return;}
   if(b.id==='preNext'){newDrill();focusLater('pre-F');return;}
   var a=b.getAttribute('data-ans');if(!a||D.answered)return;
   var code=D.map[D.hk]||'f';D.answered=true;D.choice=a;D.ok=CODE_SET[code].indexOf(a)>=0;
@@ -734,7 +912,6 @@ $('#panel-quiz').addEventListener('click',function(e){
    units: 1 = 0.1bb
    ========================================================= */
 var BB=10,SBA=5,START=1000;
-var POS6=['BTN','SB','BB','UTG','HJ','CO'];
 var STREETS=['プリフロップ','フロップ','ターン','リバー'];
 var STYLES={
   tight:{tag:'タイト',margin:0.06,bluff:0.04,aggr:0.35},
@@ -757,7 +934,7 @@ function newHand(){
   clearTimeout(G.timer);
   var hero=G.players[0];
   G.players.forEach(function(p){if(!p.hero&&p.stack<BB)p.stack=START;});
-  if(hero.stack<=0){G.over=true;G.needRebuy=true;G.resultHTML='スタックがありません。リバイしてください。';renderPlay();return;}
+  if(hero.stack<=0){G.over=true;G.needRebuy=true;G.resultHTML='スタックがありません。リバイしてください。';G.banner={main:'スタックがありません',sub:'リバイ（100bb）して続行'};renderPlay();return;}
   G.needRebuy=false;
   G.button=(G.button+1)%6;G.handNo++;
   G.players.forEach(function(p,i){p.hole=[];p.folded=false;p.allIn=false;p.bet=0;p.totalIn=0;p.acted=false;p.last='';p.pos=POS6[(i-G.button+6)%6];p.won=0;p.show=false;p.hv=null;});
@@ -857,6 +1034,11 @@ function finishHand(){
   var winners=G.players.filter(function(p){return p.won>0;});
   G.resultHTML='<div>'+res.join('<br>')+'</div><div>このハンドの収支: <span class="net '+(net>0?'pos-c':net<0?'neg-c':'')+'">'+(net>0?'+':'')+fmt(net)+'bb</span></div>'+
     (showdown?'':'<div class="muted small">'+winners.map(function(p){return p.name;}).join('')+' 以外が全員フォールド</div>');
+  var wn=function(p){return p.hero?'あなた':p.name;},top=winners.slice().sort(function(a,b){return b.won-a.won;})[0];
+  var main=winners.length===1?wn(winners[0])+'の勝ち +'+fmt(winners[0].won)+'bb':winners.map(function(p){return wn(p)+' +'+fmt(p.won);}).join('・');
+  var hand=showdown&&top&&top.hv!=null?describe(top.hv):'全員フォールド';
+  var netTxt=(net>0?'+':'')+fmt(net)+'bb';
+  G.banner={main:main,sub:hand+' · 収支 <b class="'+(net>0?'pos-c':net<0?'neg-c':'')+'">'+netTxt+'</b>',text:hand+'。あなたの収支 '+netTxt};
   renderPlay();runReview();
 }
 function heroOptions(){
@@ -971,10 +1153,13 @@ function runReview(){
     });
   })();
 }
+function revFlags(){var R=G.review;return R&&!R.pending&&!R.empty?R.rows.filter(function(r){return r.flag;}).length:0;}
+function revLabel(){var R=G.review,n=revFlags();return '振り返り'+(R&&R.pending?'<span class="muted small">…</span>':n?'<span class="flagn">!'+n+'</span>':'');}
 function renderReview(){
-  var el=$('#playReview'),R=G.review;
-  if(!R){el.innerHTML='';return;}
-  var h='<h2 class="sec">振り返り</h2>';
+  var el=$('#playReview'),R=G.review,h='';
+  var rb=document.getElementById('revBtn');if(rb)rb.innerHTML=revLabel();
+  if(G.over&&G.resultHTML)h+='<div class="handres">'+G.resultHTML+'</div>';
+  if(!R){el.innerHTML=h||'<p class="muted small">ハンドが終わると、ここにあなたの判断の振り返りが表示されます。</p>';return;}
   if(R.empty){h+='<p class="muted small">このハンドではあなたのアクションはありませんでした。</p>';el.innerHTML=h;return;}
   h+='<table class="rv"><thead><tr><th>局面</th><th>行動</th><th>勝率</th><th>必要</th><th>判定</th></tr></thead><tbody>';
   R.rows.forEach(function(x){
@@ -985,45 +1170,64 @@ function renderReview(){
   el.innerHTML=h;
 }
 /* ---------- render play ---------- */
-function seatHTML(p,i){
-  var turn=G.toAct===i&&!G.over,cls='seat s'+i+(p.folded?' folded':'')+(turn?' turn':'')+(G.over&&p.won>0?' win':'');
-  var mini='';
-  if(i!==0){
-    if(p.show)mini=cardsHTML(p.hole,'xs');
-    else if(!p.folded)mini='<span class="cd mini back"></span><span class="cd mini back"></span>';
-    mini='<div class="mini" aria-hidden="'+(p.show?'false':'true')+'">'+mini+'</div>';
+function playSeatHTML(p,i){
+  var turn=G.toAct===i&&!G.over,win=G.over&&p.won>0,g=POS_GROUP[p.pos];
+  var cls='rt-seat '+(i===0?'rt-hero':'rt-cpu')+(p.folded?' fold':'')+(turn?' turn':'')+(win?' win':'');
+  var head='<b class="rt-pos">'+p.pos+'</b>'+grpTag(p.pos);
+  var aria=(i===0?'あなた':p.name)+' '+p.pos+'（'+g[0]+'） スタック'+fmt(p.stack)+'bb'+(p.folded?' フォールド':p.last?' '+p.last:'')+(turn?' 行動中':'');
+  if(i===0){
+    var hv=p.hole.length?(G.board.length?describe(evaluate(p.hole.concat(G.board))):handKeyOf(p.hole[0],p.hole[1])):'';
+    var la=win?'+'+fmt(p.won)+'bb'+(p.show&&p.hv!=null?' · '+CAT_NAMES[catOf(p.hv)]:''):(p.last&&!/^(SB|BB) /.test(p.last)?p.last+' · ':'')+hv;
+    return '<div class="'+cls+'" data-k="0" aria-label="'+aria+'">'+ordBadge(p.pos)+
+      '<div class="rt-hc">'+(p.hole.length?cardsHTML(p.hole,''):'<span class="cd empty"></span><span class="cd empty"></span>')+'</div>'+
+      '<div class="rt-hl">'+head+'<span class="sk">'+fmt(p.stack)+'</span></div>'+
+      '<div class="la'+(win?' w':'')+'">'+(la||'&nbsp;')+'</div></div>';
   }
+  var hc=p.show?cardsHTML(p.hole,'xs'):(!p.folded&&p.hole.length?'<span class="cd mini back"></span><span class="cd mini back"></span>':'');
   var hand=p.show&&p.hv!=null?CAT_NAMES[catOf(p.hv)]:'';
-  return '<div class="'+cls+'" aria-label="'+p.pos+' '+p.name+' スタック'+fmt(p.stack)+'bb">'+mini+
-    '<div class="r1"><span class="pos">'+p.pos+'</span>'+(p.pos==='BTN'?'<span class="dbtn" aria-hidden="true">D</span>':'')+'<span class="nm">'+p.name+(i?'':'')+'</span></div>'+
-    '<div class="sk">'+fmt(p.stack)+'</div>'+
-    '<div class="la'+(G.over&&p.won>0?' w':'')+'">'+(hand&&!(G.over&&p.won>0)?hand:(p.last||(i&&!p.folded?STYLES[p.style].tag:'&nbsp;')))+'</div>'+
-    (p.bet>0?'<span class="chip">'+fmt(p.bet)+'</span>':'')+'</div>';
+  var txt=win?'+'+fmt(p.won):hand?hand:(p.last||(p.folded?'':STYLES[p.style].tag));
+  return '<div class="'+cls+'" data-k="'+i+'" aria-label="'+aria+'">'+ordBadge(p.pos)+
+    '<div class="rt-h">'+head+'</div>'+
+    '<div class="rt-m"><span class="sk">'+fmt(p.stack)+'</span>'+(hc?'<span class="rt-sc">'+hc+'</span>':'')+'</div>'+
+    '<div class="la'+(win?' w':'')+'"><span class="nm">'+p.name+'</span>'+txt+'</div></div>';
+}
+function playTableHTML(){
+  var pot=potTotal(),bets=betsTotal(),collected=pot-bets,marks=[];
+  G.players.forEach(function(p,i){if(p.bet>0)marks.push({k:i,cls:'rt-chip',html:fmt(p.bet)});});
+  marks.push({k:G.button,cls:'rt-d',html:'D'});
+  var center=(G.over&&G.banner?'<div class="rt-ban"><b>'+G.banner.main+'</b>'+(G.banner.sub?'<span>'+G.banner.sub+'</span>':'')+'</div>':
+      '<div class="rt-pot"><span>ポット</span>'+fmt(collected)+'bb'+(bets>0?'<small>計 '+fmt(pot)+'</small>':'')+'</div>')+
+    '<div class="rt-board" aria-label="ボード">'+boardHTML(G.board,'md')+'</div>';
+  return rtHTML({mode:'play',order:TBL.order.play,label:'テーブル。あなたは下中央。上がディーラー、行動は時計回り',seats:G.players.map(playSeatHTML),marks:marks,center:center,
+    corner:ordBtn('playOrd','play')+'<button type="button" class="rt-corner r" id="playLogBtn" aria-haspopup="dialog">ログ</button>'});
 }
 function renderPlay(){
   if(!G.init)return;
   var act=document.activeElement&&document.activeElement.id;
-  var pot=potTotal(),collected=pot-betsTotal();
-  var t='<div class="felt" role="group" aria-label="テーブル">'+G.players.map(seatHTML).join('')+
-    '<div class="potlbl">ポット '+fmt(collected)+'bb'+(betsTotal()>0?'<small>合計 '+fmt(pot)+'bb</small>':'<small>&nbsp;</small>')+'</div>'+
-    '<div class="board" aria-label="ボード">'+boardHTML(G.board,'md')+'</div></div>';
-  $('#playTable').innerHTML=t;
-  var hero=G.players[0],hv=hero.hole.length?(G.board.length?describe(evaluate(hero.hole.concat(G.board))):handKeyOf(hero.hole[0],hero.hole[1])):'';
-  $('#playHero').innerHTML=hero.hole.length?'<div class="heroarea"><div class="cards">'+cardsHTML(hero.hole,'lg')+'</div><div class="heroinfo"><div class="hn">'+hv+'</div><div class="hs">'+fmt(hero.stack)+'bb</div><div class="muted small">'+hero.pos+' · ハンド #'+G.handNo+'</div></div></div>':'';
+  $('#playStage').innerHTML=playTableHTML();
+  layoutRT($('#playStage .rt'));
   renderControls();
-  var lg=$('#playLog');lg.innerHTML=G.log.map(function(l){return '<li class="'+l.c+'">'+l.t+'</li>';}).join('');
-  if(!G.review)$('#playReview').innerHTML='';
+  $('#playLog').innerHTML=G.log.map(function(l){return '<li class="'+l.c+'">'+l.t+'</li>';}).join('');
+  if(!G.review)renderReview();
   if(act){var e=document.getElementById(act);if(e&&e!==document.activeElement)e.focus({preventScroll:true});}
 }
 function raiseLabel(to,o){return to>=o.maxTo?'All-in '+fmt(to):(G.currentBet===0?'Bet ':'Raise ')+fmt(to);}
 function renderControls(){
-  var el=$('#playCtl');
+  var el=$('#playCtl'),pot=potTotal();
   if(G.over){
-    el.innerHTML='<div class="handres" role="status">'+(G.resultHTML||'')+'</div><div class="row">'+(G.needRebuy?'':'<button type="button" id="nextHand" class="btn primary">次のハンド</button>')+'<button type="button" id="rebuy" class="btn">リバイ（100bb）</button></div>';
+    el.innerHTML='<p class="sr" role="status">'+(G.banner?G.banner.main+'。'+(G.banner.text||''):'')+'</p>'+
+      '<div class="acts3"><button type="button" id="revBtn" class="btn" aria-haspopup="dialog">'+revLabel()+'</button>'+
+      '<button type="button" id="rebuy" class="btn'+(G.needRebuy?' primary':'')+'">リバイ</button>'+
+      (G.needRebuy?'':'<button type="button" id="nextHand" class="btn primary">次のハンド</button>')+'</div>'+
+      '<p class="hint">ハンド #'+G.handNo+' · スタック <b>'+fmt(G.players[0].stack)+'bb</b> · 累計 <b>'+(stats.play.net>0?'+':'')+fmt(stats.play.net)+'bb</b></p>';
     return;
   }
-  if(G.toAct!==0){el.innerHTML='<p class="wait" aria-live="polite">'+(G.toAct>=0?G.players[G.toAct].name+'（'+G.players[G.toAct].pos+'）が考え中…':'カードを配っています…')+'</p>';return;}
-  var o=heroOptions(),ps=o.canRaise?presets(o):[],pot=potTotal();
+  if(G.toAct!==0){
+    el.innerHTML='<p class="wait" aria-live="polite">'+(G.toAct>=0?G.players[G.toAct].name+'（'+G.players[G.toAct].pos+'）が考え中…':'カードを配っています…')+'</p>'+
+      '<p class="hint">ハンド #'+G.handNo+' · '+STREETS[G.street]+' · ポット <b>'+fmt(pot)+'bb</b></p>';
+    return;
+  }
+  var o=heroOptions(),ps=o.canRaise?presets(o):[];
   if(o.canRaise&&(G.raiseTo==null||G.raiseTo<o.minTo||G.raiseTo>o.maxTo))G.raiseTo=G.street===0?ps[0][1]:ps[1][1];
   var h='';
   if(o.canRaise){
@@ -1032,7 +1236,7 @@ function renderControls(){
   }
   h+='<div class="acts3"><button type="button" id="actFold" class="btn">Fold</button><button type="button" id="actCall" class="btn">'+(o.canCheck?'Check':'Call '+fmt(o.toCall))+'</button>'+
     (o.canRaise?'<button type="button" id="actRaise" class="btn primary">'+raiseLabel(G.raiseTo,o)+'</button>':'<button type="button" class="btn" disabled>Raise</button>')+'</div>';
-  h+='<p class="hint">ポット <b>'+fmt(pot)+'bb</b>'+(o.toCall>0?' · コール <b>'+fmt(o.toCall)+'bb</b> · 必要勝率 <b>'+pct(o.toCall/(pot+o.toCall))+'</b>':'')+(o.canRaise&&o.minTo<o.maxTo?' · 最小レイズ <b>'+fmt(o.minTo)+'</b>':'')+'</p>';
+  h+='<p class="hint">ポット <b>'+fmt(pot)+'bb</b>'+(o.toCall>0?' · コール <b>'+fmt(o.toCall)+'</b> · 必要勝率 <b>'+pct(o.toCall/(pot+o.toCall))+'</b>':'')+(o.canRaise&&o.minTo<o.maxTo?' · 最小 <b>'+fmt(o.minTo)+'</b>':'')+'</p>';
   el.innerHTML=h;
 }
 $('#panel-play').addEventListener('click',function(e){
@@ -1041,8 +1245,11 @@ $('#panel-play').addEventListener('click',function(e){
   else if(b.id==='actCall')heroAct('call');
   else if(b.id==='actRaise')heroAct('raise');
   else if(b.hasAttribute('data-to')){G.raiseTo=+b.getAttribute('data-to');renderControls();focusLater(b.id);}
-  else if(b.id==='nextHand'){G.review=null;$('#playReview').innerHTML='';newHand();}
-  else if(b.id==='rebuy'){G.players[0].stack=START;G.needRebuy=false;G.resultHTML='スタックを100bbにリセットしました。';renderPlay();focusLater('nextHand');}
+  else if(b.id==='nextHand'){G.review=null;newHand();focusLater(G.toAct===0?'actCall':'nextHand');}
+  else if(b.id==='rebuy'){G.players[0].stack=START;G.needRebuy=false;G.resultHTML='スタックを100bbにリセットしました。';G.banner={main:'スタックを100bbにリセット',sub:'「次のハンド」で再開'};renderPlay();focusLater('nextHand');}
+  else if(b.id==='playOrd')toggleOrder(b);
+  else if(b.id==='playLogBtn')openPS('log','playLogBtn');
+  else if(b.id==='revBtn')openPS('rev','revBtn');
 });
 $('#panel-play').addEventListener('input',function(e){
   if(e.target.id!=='raiseSlider')return;
@@ -1050,6 +1257,19 @@ $('#panel-play').addEventListener('input',function(e){
   $('#raiseOut').textContent=fmt(G.raiseTo)+'bb';var rb=$('#actRaise');if(rb)rb.textContent=raiseLabel(G.raiseTo,o);
   document.querySelectorAll('.chipbtn').forEach(function(c){c.classList.toggle('on',+c.getAttribute('data-to')===G.raiseTo);});
 });
+/* play bottom sheet: review + hand log */
+var PS={pane:'rev',opener:null};
+function showPSPane(){var r=PS.pane==='rev';$('#psRev').setAttribute('aria-selected',r?'true':'false');$('#psLog').setAttribute('aria-selected',r?'false':'true');$('#psRev').tabIndex=r?0:-1;$('#psLog').tabIndex=r?-1:0;$('#psRevBody').hidden=!r;$('#psLogBody').hidden=r;}
+function openPS(pane,opener){PS.pane=pane;PS.opener=opener;renderReview();showPSPane();$('#psheet').hidden=false;focusLater('psClose');}
+function closePS(){$('#psheet').hidden=true;var o=PS.opener&&document.getElementById(PS.opener);if(o)o.focus({preventScroll:true});}
+$('#psheet').addEventListener('click',function(e){
+  if(e.target.closest('[data-pclose]')||e.target.id==='psClose'){closePS();return;}
+  var b=e.target.closest('[role=tab]');if(b){PS.pane=b.id==='psLog'?'log':'rev';showPSPane();b.focus();}
+});
+$('#psheet').addEventListener('keydown',function(e){
+  if((e.key==='ArrowRight'||e.key==='ArrowLeft')&&e.target.getAttribute('role')==='tab'){PS.pane=PS.pane==='rev'?'log':'rev';showPSPane();$(PS.pane==='rev'?'#psRev':'#psLog').focus();e.preventDefault();}
+});
+if(typeof ResizeObserver!=='undefined'){try{new ResizeObserver(function(){layoutRT($('#playStage .rt'));}).observe($('#playStage'));}catch(e){}}
 
 /* =========================================================
    STATS SHEET
@@ -1076,7 +1296,7 @@ $('#sheet').addEventListener('click',function(e){
   else if(id==='rstNo'){confirmReset=false;renderStats();focusLater('rstAsk');}
   else if(id==='rstYes'){stats=defStats();sess={n:0,c:0};saveStats();confirmReset=false;renderHeader();renderStats();focusLater('rstAsk');}
 });
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet();});
+document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(!$('#psheet').hidden)closePS();else if(!$('#sheet').hidden)closeSheet();});
 
 /* ---------- boot ---------- */
 renderHeader();

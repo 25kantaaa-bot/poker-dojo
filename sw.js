@@ -1,7 +1,7 @@
 /* Poker Dojo service worker
    network-first for index.html (so updates show immediately when online),
    falling back to cache when offline. Icons/manifest are precached. */
-const VERSION = "pd-v3";
+const VERSION = "pd-v4";
 const SHELL = `${VERSION}-shell`;
 const SHELL_FILES = [
   "./",

@@ -46,7 +46,7 @@ button{font:inherit;color:inherit}
 .ghost{min-height:40px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--text);font-weight:500;font-size:13px;cursor:pointer}
 .tabwrap{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);padding:6px 0 10px;margin-bottom:6px}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:3px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
-.tabs button{min-height:44px;border:0;background:transparent;color:var(--muted);font-weight:500;font-size:13px;border-radius:7px;cursor:pointer;padding:0 2px}
+.tabs button{min-height:44px;border:0;background:transparent;color:var(--muted);font-weight:500;font-size:12px;white-space:nowrap;letter-spacing:-.02em;border-radius:7px;cursor:pointer;padding:0 2px}
 .tabs button[aria-selected="true"]{background:var(--brass);color:var(--ink);font-weight:700}
 h2.sec{font:700 13px var(--f-body);color:var(--muted);letter-spacing:.06em;margin:18px 0 8px}
 .muted{color:var(--muted)}
@@ -355,6 +355,30 @@ ol.chain li span{flex:none;width:76px;color:var(--brass);font-size:12px;padding-
 .ch-h{font:700 14px var(--f-body);margin:14px 0 4px}
 table.st.ch td,table.st.ch th{padding:6px 4px;font-size:13px}
 table.st.ch thead th{line-height:1.3}
+/* dashboard / home */
+.tabwrap[hidden]{display:none}
+html.home .score{display:none}
+.tabrow{display:flex;align-items:center;gap:8px}
+.home-btn{display:flex;align-items:center;gap:6px;flex:none;min-height:44px}
+.home-btn svg{display:block;color:var(--brass)}
+.dash{display:flex;flex-direction:column;gap:10px;padding-top:2px}
+.dash-sum{margin:0;font:500 12.5px var(--f-mono);color:var(--muted)}
+.dash-cards{display:flex;flex-direction:column;gap:10px}
+.dcard{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:13px 14px;color:var(--text);cursor:pointer;min-height:44px}
+.dcard:hover{border-color:#3a5649}
+.dc-top{display:flex;align-items:center;gap:8px}
+.dc-ic{color:var(--brass);display:flex;flex:none}
+.dc-ttl{font:700 16px var(--f-display);flex:1}
+.dc-rec{font:600 10.5px var(--f-body);color:var(--ink);background:var(--brass);padding:2px 7px;border-radius:999px;white-space:nowrap}
+.dc-desc{margin:4px 0 8px;font-size:12.5px;color:var(--muted)}
+.dc-segs{display:flex;gap:3px;margin-bottom:6px}
+.hseg{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.hseg.clr{background:var(--brass)}
+.hseg.cur{box-shadow:0 0 0 1px var(--text)}
+.hseg.lock{opacity:.4}
+.dc-line{margin:0;font-size:13px}
+.dc-line b{font-family:var(--f-mono)}
+.dc-empty{margin:0;font-size:12.5px;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -375,15 +399,19 @@ table.st.ch thead th{line-height:1.3}
       <button id="statsBtn" class="ghost" type="button" aria-haspopup="dialog">成績</button>
     </div>
   </header>
-  <div class="tabwrap">
-    <nav class="tabs" role="tablist" aria-label="モード切替">
-      <button type="button" role="tab" id="tab-train" aria-controls="panel-train" aria-selected="true" data-mode="train">確率トレ</button>
-      <button type="button" role="tab" id="tab-pre" aria-controls="panel-pre" aria-selected="false" tabindex="-1" data-mode="pre">プリフロップ</button>
-      <button type="button" role="tab" id="tab-play" aria-controls="panel-play" aria-selected="false" tabindex="-1" data-mode="play">実戦</button>
-    </nav>
+  <div class="tabwrap" id="tabwrap">
+    <div class="tabrow">
+      <button type="button" class="ghost home-btn" id="homeBtn" aria-label="ホームに戻る"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 8L8 2l6 6M4 7v6h3v-4h2v4h3V7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>ホーム</span></button>
+      <nav class="tabs" role="tablist" aria-label="モード切替">
+        <button type="button" role="tab" id="tab-train" aria-controls="panel-train" aria-selected="true" data-mode="train">確率トレ</button>
+        <button type="button" role="tab" id="tab-pre" aria-controls="panel-pre" aria-selected="false" tabindex="-1" data-mode="pre">プリフロップ</button>
+        <button type="button" role="tab" id="tab-play" aria-controls="panel-play" aria-selected="false" tabindex="-1" data-mode="play">実戦</button>
+      </nav>
+    </div>
   </div>
   <main>
-    <section id="panel-train" role="tabpanel" aria-labelledby="tab-train"></section>
+    <section id="panel-home" aria-label="ホーム" hidden></section>
+    <section id="panel-train" role="tabpanel" aria-labelledby="tab-train" hidden></section>
     <section id="panel-pre" role="tabpanel" aria-labelledby="tab-pre" hidden></section>
     <section id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
       <ol id="streetBar" class="streets" aria-label="ハンドの進行"></ol>
@@ -797,13 +825,18 @@ var REDUCED=false;try{REDUCED=window.matchMedia('(prefers-reduced-motion: reduce
 var STORE='pokerDojo.v1';
 function defTr(){return {h:{1:[],2:[],3:[],4:[]},best:{1:0,2:0,3:0,4:0},n:{1:0,2:0,3:0,4:0},c:{1:0,2:0,3:0,4:0},clr:{1:false,2:false,3:false,4:false},cur:0,free:false};}
 function defPref(){return {speed:'mid',coach:true,quiz:false};}
-function defStats(){return {pre:{n:0,c:0},train:{n:0,c:0},tr:defTr(),play:{hands:0,net:0,flags:0},streak:0,best:0,pref:defPref()};}
+/* day:{k,n,c} = today's answered-question counter (train+pre combined) for the dashboard summary line.
+   lastAt:{train,pre,play} = last-visited timestamp per mode, used to pick the dashboard's "おすすめ" card
+   (whichever mode has not been opened most recently; 確率トレ if nothing has ever been played). */
+function defStats(){return {pre:{n:0,c:0,streak:0},train:{n:0,c:0},tr:defTr(),play:{hands:0,net:0,flags:0,stack:1000},streak:0,best:0,pref:defPref(),day:{k:'',n:0,c:0},lastAt:{train:0,pre:0,play:0}};}
 function loadStats(){
   var d=defStats();
   try{var s=localStorage.getItem(STORE);if(s){var o=JSON.parse(s);
     /* old 'odds' / 'quiz' modes (removed tabs) are ignored */
     ['pre','train','play'].forEach(function(k){if(o[k])for(var f in d[k])if(typeof o[k][f]==='number')d[k][f]=o[k][f];});
     if(typeof o.streak==='number')d.streak=o.streak;if(typeof o.best==='number')d.best=o.best;
+    if(o.day&&typeof o.day==='object'&&typeof o.day.k==='string'&&typeof o.day.n==='number'&&typeof o.day.c==='number')d.day=o.day;
+    if(o.lastAt&&typeof o.lastAt==='object')['train','pre','play'].forEach(function(k){if(typeof o.lastAt[k]==='number')d.lastAt[k]=o.lastAt[k];});
     var t=o.tr;if(t&&typeof t==='object'){
       for(var st=1;st<=4;st++){
         if(t.h&&Array.isArray(t.h[st]))d.tr.h[st]=t.h[st].filter(function(x){return Array.isArray(x)&&typeof x[0]==='number'&&typeof x[1]==='number';}).slice(-20);
@@ -819,32 +852,122 @@ function loadStats(){
 function saveStats(){try{localStorage.setItem(STORE,JSON.stringify(stats));}catch(e){}}
 var stats=loadStats();
 var sess={n:0,c:0};
+function todayKey(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 function record(mode,ok){
   stats[mode].n++;sess.n++;
   if(ok){stats[mode].c++;sess.c++;stats.streak++;if(stats.streak>stats.best)stats.best=stats.streak;}else stats.streak=0;
+  if(mode==='pre'){if(ok)stats.pre.streak=(stats.pre.streak||0)+1;else stats.pre.streak=0;}
+  var dk=todayKey();
+  if(!stats.day||stats.day.k!==dk)stats.day={k:dk,n:0,c:0};
+  stats.day.n++;if(ok)stats.day.c++;
   saveStats();renderHeader();
 }
 function renderHeader(){$('#sessScore').textContent=sess.c+' / '+sess.n;$('#streakTxt').textContent='連続 '+stats.streak;}
 
-/* ---------- tabs ---------- */
-var MODES=['train','pre','play'];var curMode='train';
-function setMode(m,focusTab){
+/* ---------- tabs / mode switching ---------- */
+var MODES=['train','pre','play'];var curMode='home';
+var HASH_MODE={kakuritsu:'train',preflop:'pre',jissen:'play'};
+var MODE_HASH={train:'kakuritsu',pre:'preflop',play:'jissen'};
+/* applyMode: does the actual panel/tab/engine-init work. setMode (below) additionally
+   manages the URL hash + history so the browser/PWA back gesture returns to the dashboard. */
+function applyMode(m,focusTab){
   curMode=m;
   MODES.forEach(function(k){var t=$('#tab-'+k),p=$('#panel-'+k),on=k===m;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1;p.hidden=!on;});
+  $('#panel-home').hidden=m!=='home';
+  $('#tabwrap').hidden=m==='home';
   var wasPlay=document.documentElement.classList.contains('playmode');
   document.documentElement.classList.toggle('playmode',m==='play');
+  document.documentElement.classList.toggle('home',m==='home');
   if(m==='play'&&!wasPlay){try{window.scrollTo(0,0);}catch(e){}}
-  if(focusTab)$('#tab-'+m).focus({preventScroll:m==='play'});
   if(m!=='train'&&T.atk&&!T.atk.done){abortAttack();renderTrain();}
   if(m==='play'&&!G.init)playInit();
   if(m==='pre'&&!D.hk)newDrill();
+  if(m!=='home'){stats.lastAt[m]=Date.now();saveStats();}
+  if(m==='home')renderHome();
+  if(focusTab){if(m==='home')focusLater('dcard-train');else $('#tab-'+m).focus({preventScroll:m==='play'});}
   relayoutAll();
+}
+function setMode(m,focusTab){
+  applyMode(m,focusTab);
+  var hash=m==='home'?'':('#'+MODE_HASH[m]);
+  if((location.hash||'')!==hash){try{history.pushState({mode:m},'',hash||(location.pathname+location.search));}catch(e){}}
 }
 document.querySelector('.tabs').addEventListener('click',function(e){var b=e.target.closest('[data-mode]');if(b)setMode(b.getAttribute('data-mode'));});
 document.querySelector('.tabs').addEventListener('keydown',function(e){
   var i=MODES.indexOf(curMode);
+  if(i<0)return;
   if(e.key==='ArrowRight'){setMode(MODES[(i+1)%3],true);e.preventDefault();}
   else if(e.key==='ArrowLeft'){setMode(MODES[(i+2)%3],true);e.preventDefault();}
+});
+$('#homeBtn').addEventListener('click',function(){setMode('home',true);});
+window.addEventListener('popstate',function(){
+  var h=(location.hash||'').replace('#','');
+  applyMode(HASH_MODE[h]||'home',false);
+});
+
+/* =========================================================
+   MODE 0: DASHBOARD (HOME)
+   ========================================================= */
+var ICON_BARS='<svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><rect x="2" y="10" width="3" height="8" rx="1" fill="currentColor"/><rect x="8.5" y="5" width="3" height="13" rx="1" fill="currentColor"/><rect x="15" y="8" width="3" height="10" rx="1" fill="currentColor"/></svg>';
+var ICON_TABLE='<svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="2" fill="currentColor"/></svg>';
+var ICON_CARDS='<svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><rect x="2" y="4" width="10" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4" transform="rotate(-8 7 11)"/><rect x="8" y="4" width="10" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4" transform="rotate(8 13 11)"/></svg>';
+function dashDateStr(){try{return new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric',weekday:'short'});}catch(e){return '';}}
+function dashSummary(){
+  var d=stats.day;
+  if(!d||d.k!==todayKey()||!d.n)return '今日はまだ記録なし';
+  return '今日 '+d.n+'問 · 正答率 '+Math.round(d.c/d.n*100)+'%';
+}
+/* おすすめ: 直近に開いていないモードを優先表示。一度も開いていなければ確率トレ（基礎）を優先する */
+function recommendMode(){
+  var at=stats.lastAt||{train:0,pre:0,play:0};
+  if(!at.train&&!at.pre&&!at.play)return 'train';
+  var best='train',bv=at.train;
+  ['pre','play'].forEach(function(k){if((at[k]||0)<bv){bv=at[k];best=k;}});
+  return best;
+}
+function homeTrainInfo(){
+  var s=stats.tr.cur;
+  if(!(s>=1&&s<=4)||!stSelectable(s)){s=1;for(var k=4;k>=1;k--)if(stUnlocked(k))s=k;}
+  return {stage:s,name:STAGES[s].name,best:stats.tr.best[s]};
+}
+function homeStageSegs(cur){
+  var h='';
+  for(var s=1;s<=4;s++){
+    var cls=stats.tr.clr[s]?'clr':(stUnlocked(s)?'':'lock');if(s===cur)cls+=' cur';
+    h+='<i class="hseg '+cls+'" aria-hidden="true"></i>';
+  }
+  return h;
+}
+function dashCard(mode,o){
+  return '<button type="button" class="dcard" id="dcard-'+mode+'" data-mode="'+mode+'" aria-label="'+o.title+'：'+o.desc+'">'+
+    '<div class="dc-top"><span class="dc-ic">'+o.icon+'</span><span class="dc-ttl">'+o.title+'</span>'+(o.rec?'<span class="dc-rec">おすすめ</span>':'')+'</div>'+
+    '<p class="dc-desc">'+o.desc+'</p>'+o.body+'</button>';
+}
+function renderHome(){
+  var rec=recommendMode(),ti=homeTrainInfo();
+  var trBody=stats.train.n===0?'<p class="dc-empty">まだ記録なし・まずはステージ1から</p>':
+    '<div class="dc-segs">'+homeStageSegs(ti.stage)+'</div><p class="dc-line">ステージ'+ti.stage+' '+ti.name+(ti.best?' · 60秒アタック ベスト <b>'+ti.best+'</b>問':'')+'</p>';
+  var pn=stats.pre.n,pc=stats.pre.c,pstreak=stats.pre.streak||0;
+  var preBody=pn===0?'<p class="dc-empty">まだ記録なし・まずは1問から</p>':
+    '<p class="dc-line">回答 <b>'+pn+'</b>問 · 正答率 <b>'+Math.round(pc/pn*100)+'%</b> · 連続 <b>'+pstreak+'</b></p>';
+  var ph=stats.play.hands,net=stats.play.net,stack=G.init?G.players[0].stack:(stats.play.stack||1000);
+  var playBody=ph===0?'<p class="dc-empty">まだ記録なし・まずは1ハンドから</p>':
+    '<p class="dc-line">ハンド <b>'+ph+'</b> · 収支 <b class="'+(net>0?'pos-c':net<0?'neg-c':'')+'">'+(net>0?'+':'')+fmt(net)+'bb</b> · スタック <b>'+fmt(stack)+'bb</b></p>';
+  var h='<div class="dash">'+
+    '<p class="dash-sum" id="dashSum">'+dashDateStr()+' · '+dashSummary()+'</p>'+
+    '<div class="dash-cards">'+
+      dashCard('train',{rec:rec==='train',icon:ICON_BARS,title:'確率トレ',desc:'アウツ・勝率・必要勝率を素早く計算',body:trBody})+
+      dashCard('pre',{rec:rec==='pre',icon:ICON_TABLE,title:'プリフロップ',desc:'ポジション別のオープン・3ベット判断',body:preBody})+
+      dashCard('play',{rec:rec==='play',icon:ICON_CARDS,title:'実戦',desc:'CPU5人とコーチ付きで対戦',body:playBody})+
+    '</div>'+
+    '<button type="button" class="ghost" id="dashStatsBtn" style="width:100%">成績をみる</button>'+
+  '</div>';
+  $('#panel-home').innerHTML=h;
+}
+$('#panel-home').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  var m=b.getAttribute('data-mode');if(m){setMode(m,true);return;}
+  if(b.id==='dashStatsBtn')openSheet();
 });
 
 /* =========================================================
@@ -1391,7 +1514,7 @@ function finishHand(){
   G.players.forEach(function(p){if(p.won>0)p.last='+'+fmt(p.won);});
   var hero=G.players[0],net=hero.stack-G.heroStart;
   G.over=true;G.toAct=-1;
-  stats.play.hands++;stats.play.net+=net;saveStats();
+  stats.play.hands++;stats.play.net+=net;stats.play.stack=hero.stack;saveStats();
   var winners=G.players.filter(function(p){return p.won>0;});
   G.resultHTML='<div>'+res.join('<br>')+'</div><div>このハンドの収支: <span class="net '+(net>0?'pos-c':net<0?'neg-c':'')+'">'+(net>0?'+':'')+fmt(net)+'bb</span></div>'+
     (showdown?'':'<div class="muted small">'+winners.map(function(p){return p.name;}).join('')+' 以外が全員フォールド</div>');
@@ -1759,7 +1882,7 @@ $('#panel-play').addEventListener('click',function(e){
   }
   else if(b.id==='playSpd'){var ks=['slow','mid','fast'];stats.pref.speed=ks[(ks.indexOf(stats.pref.speed)+1)%3];saveStats();renderPlay();focusLater('playSpd');}
   else if(b.id==='nextHand'){G.review=null;newHand();focusLater(G.toAct===0?'actCall':'nextHand');}
-  else if(b.id==='rebuy'){G.players[0].stack=START;G.needRebuy=false;G.sdText=null;G.resultHTML='スタックを100bbにリセットしました。';G.banner={main:'スタックを100bbにリセット',sub:'「次のハンド」で再開'};renderPlay();focusLater('nextHand');}
+  else if(b.id==='rebuy'){G.players[0].stack=START;stats.play.stack=START;saveStats();G.needRebuy=false;G.sdText=null;G.resultHTML='スタックを100bbにリセットしました。';G.banner={main:'スタックを100bbにリセット',sub:'「次のハンド」で再開'};renderPlay();focusLater('nextHand');}
   else if(b.id==='playOrd')toggleOrder(b);
   else if(b.id==='playLogBtn')openPS('log','playLogBtn');
   else if(b.id==='revBtn')openPS('rev','revBtn');
@@ -1816,6 +1939,10 @@ document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(!$
 /* ---------- boot ---------- */
 renderHeader();
 trainInit();
+(function(){
+  var h=(location.hash||'').replace('#','');
+  applyMode(HASH_MODE[h]||'home',false);
+})();
 })();
 </script>
 <script>
